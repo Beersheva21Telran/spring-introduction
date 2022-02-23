@@ -6,6 +6,8 @@ import java.util.Scanner;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -15,12 +17,15 @@ import telran.spring.service.SenderService;
 
 @SpringBootApplication
 public class SpringIntroductionApplication {
+	static Logger LOG = LoggerFactory.getLogger(SpringIntroductionApplication.class);
 static ConfigurableApplicationContext ctx;
 	public static void main(String[] args) {
 		ctx = SpringApplication.run(SpringIntroductionApplication.class, args);
+		
 		Scanner scanner = new Scanner(System.in);
 		Sender sender = ctx.getBean(Sender.class);
 		Map<String, SenderService> senderServices = sender.getServices();
+		LOG.info("Number of sender services is {}", senderServices.size());
 		System.out.println("Enter exit for stopping application");
 		while(true) {
 			System.out.println("Enter sender type");
@@ -34,6 +39,7 @@ static ConfigurableApplicationContext ctx;
 			SenderService service = senderServices.get(line);
 			if (service == null) {
 				System.out.printf("Service %s is not implemented yet\n", line);
+				LOG.error("  service {} not found", line);
 				continue;
 			}
 			System.out.println("Enter message");
@@ -46,6 +52,7 @@ static ConfigurableApplicationContext ctx;
 	}
 	@PostConstruct
 	void init() {
+		LOG.debug("Post Construct method has been called");
 		System.out.println("Application context has been created " );
 	}
 	@PreDestroy

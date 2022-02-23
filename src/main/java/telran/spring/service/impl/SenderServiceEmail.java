@@ -12,4 +12,10 @@ public class SenderServiceEmail implements SenderService {
 
 	}
 
+	@Override
+	public String getType() {
+		
+		return "email";
+	}
+
 }

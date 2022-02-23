@@ -12,4 +12,10 @@ public class SenderServiceInternet implements SenderService {
 
 	}
 
+	@Override
+	public String getType() {
+		
+		return "internet";
+	}
+
 }
